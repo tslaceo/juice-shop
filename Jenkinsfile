@@ -1,8 +1,4 @@
 pipeline {
-    parameters {
-        string{defaultValue: "0.0.1", description: "application Version", 
-name: "version"}
-    }
     environment {
         registry = "tslaceo"
         imageName = 'testapp'
@@ -42,7 +38,6 @@ name: "version"}
                     docker.withRegistry("${registry}/${imageName}", 
 "${registryCred}") {
                         dockerImage.push()
-                        dockerImage.push("${version}")
                     }
                 }
             }
