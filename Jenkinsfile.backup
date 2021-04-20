@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        registry = "tslaceo/testapp"
+        registry = "tslaceo"
         imageName = 'testapp'
         registryCred = 'tslaceo'
         gitProject = "https://github.com/tslaceo/juice-shop.git"
@@ -17,7 +17,7 @@ pipeline {
         }
         stage ('get src from git') {
             steps {
-                git 'https://github.com/tslaceo/juice-shop.git'
+                git url: "${gitProject}"
             }
         }
         stage ('run tests') {
@@ -28,14 +28,15 @@ pipeline {
         stage ('build docker') {
             steps {
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build("${registry}/${imageName}")
                 }
             }
         }
         stage ('docker publish') {
             steps {
                 script {
-                    docker.withRegistry( '', registryCred ) {
+                    docker.withRegistry("${registry}/${imageName}", 
+"${registryCred}") {
                         dockerImage.push()
                     }
                 }
