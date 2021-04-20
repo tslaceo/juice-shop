@@ -43,7 +43,7 @@ pipeline {
         }
         stage ('cleaning') {
             steps {
-                sh 'docker rmi -f $(docker images -a -q)'
+                sh "docker rmi $registry:$BUILD_NUMBER"
             }
         }
     }
